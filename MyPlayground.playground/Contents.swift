@@ -90,202 +90,203 @@ var str = "Hello, playground"
 //
 //print(sortNonPrime)
 
-
-
-public class BST<T:Comparable> {
-    private(set) public var value:T
-    private(set) public var parent:BST?
-    private(set) public var left:BST?
-    private(set) public var right:BST?
-    
-    
-    public var isLeftChild: Bool {
-        return parent?.left === self
-    }
-    
-    public var isRightChild: Bool {
-        return parent?.right === self
-    }
-
-    
-    public init(value:T) {
-        self.value = value
-    }
-    
-    public func insert(value:T) {
-        if value < self.value {
-            if let left = left {
-                left.insert(value: value)
-            } else {
-                left = BST(value: value)
-                left?.parent = self
-            }
-        } else {
-            if let right = right {
-                right.insert(value: value)
-            } else {
-                right = BST(value: value)
-                right?.parent = self
-            }
-        }
-    }
-
-    func search(value:T) -> BST? {
-        var node:BST? = self
-        while let n = node {
-            if value < n.value {
-                node = n.left
-            } else if value > n.value {
-                node = n.right
-            } else {
-                return node
-            }
-        }
-        return nil
-    }
-    
-    public func traverseInOrder(process: (T) -> Void) {
-        left?.traverseInOrder(process: process)
-        process(value)
-        right?.traverseInOrder(process: process)
-    }
-    
-    public func traversePostOrder(process: (T) -> Void) {
-        left?.traversePostOrder(process: process)
-        right?.traversePostOrder(process: process)
-        process(value)
-    }
-    
-    public func traversePreOrder(process: (T) -> Void) {
-        process(value)
-        left?.traversePreOrder(process: process)
-        right?.traversePreOrder(process: process)
-    }
-    
-    public func reconnectParentTo(node: BST?) {
-        if let parent = parent {
-            print(parent)
-            if isLeftChild {
-                parent.left = node
-            } else {
-                parent.right = node
-            }
-        }
-        node?.parent = parent
-    }
-    
-    public func minium() -> BST {
-        var node = self
-        while let next = node.left {
-            node = next
-        }
-        return node
-    }
-    
-    public func maximum() -> BST {
-        var node = self
-        while let next = node.right {
-            node = next
-        }
-        
-        return node
-    }
-
-    
-    //@discardableResult
-    public func remove() -> BST? {
-        let replacement : BST?
-        if let right = right {
-            replacement = right.minium()
-        } else if let left = left{
-            replacement = left.maximum()
-        } else {
-            replacement = nil
-        }
-        
-        replacement?.remove()
-        
-        replacement?.right = right
-        replacement?.left = left
-        right?.parent = replacement
-        left?.parent = replacement
-        reconnectParentTo(node: replacement)
-        
-        parent = nil
-        left = nil
-        right = nil
-        
-        return replacement
-    }
-    
-    public func map(formula: (T) -> T) -> [T] {
-        var a = [T]()
-        if let left = left { a += left.map(formula: formula) }
-        a.append(formula(value))
-        if let right = right { a += right.map(formula: formula) }
-        return a
-    }
-    
-    public func toArray() -> [T] {
-        return map { $0 }
-    }
-    
-}
-
-
-extension BST: CustomStringConvertible {
-    public var description: String {
-        var s = ""
-        if let left = left {
-            s += "(\(left.description)) <- "
-        }
-        s += "\(value)"
-        if let right = right {
-            s += " -> (\(right.description))"
-        }
-        return s
-    }
-}
-
-let tree = BST<Int>(value: 7)
-
-tree.insert(value: 2)
-tree.insert(value: 5)
-tree.insert(value: 10)
-tree.insert(value: 9)
-tree.insert(value: 1)
-
-print(tree.description)
-
-tree.search(value: 9)
-
-
-
-tree.traverseInOrder { (value) in
-    print(value)
-}
-
-print("\n")
-
-tree.traversePostOrder { (value) in
-    print(value)
-}
-
-print("\n")
-
-tree.traversePreOrder { (value) in
-    print(value)
-}
-
-
+//
+//
+//public class BST<T:Comparable> {
+//    private(set) public var value:T
+//    private(set) public var parent:BST?
+//    private(set) public var left:BST?
+//    private(set) public var right:BST?
+//
+//
+//    public var isLeftChild: Bool {
+//        return parent?.left === self
+//    }
+//
+//    public var isRightChild: Bool {
+//        return parent?.right === self
+//    }
+//
+//
+//    public init(value:T) {
+//        self.value = value
+//    }
+//
+//    public func insert(value:T) {
+//        if value < self.value {
+//            if let left = left {
+//                left.insert(value: value)
+//            } else {
+//                left = BST(value: value)
+//                left?.parent = self
+//            }
+//        } else {
+//            if let right = right {
+//                right.insert(value: value)
+//            } else {
+//                right = BST(value: value)
+//                right?.parent = self
+//            }
+//        }
+//    }
+//
+//    func search(value:T) -> BST? {
+//        var node:BST? = self
+//        while let n = node {
+//            if value < n.value {
+//                node = n.left
+//            } else if value > n.value {
+//                node = n.right
+//            } else {
+//                return node
+//            }
+//        }
+//        return nil
+//    }
+//
+//    public func traverseInOrder(process: (T) -> Void) {
+//        left?.traverseInOrder(process: process)
+//        process(value)
+//        right?.traverseInOrder(process: process)
+//    }
+//
+//    public func traversePostOrder(process: (T) -> Void) {
+//        left?.traversePostOrder(process: process)
+//        right?.traversePostOrder(process: process)
+//        process(value)
+//    }
+//
+//    public func traversePreOrder(process: (T) -> Void) {
+//        process(value)
+//        left?.traversePreOrder(process: process)
+//        right?.traversePreOrder(process: process)
+//    }
+//
+//    public func reconnectParentTo(node: BST?) {
+//        if let parent = parent {
+//            print(parent)
+//            if isLeftChild {
+//                parent.left = node
+//            } else {
+//                parent.right = node
+//            }
+//        }
+//        node?.parent = parent
+//    }
+//
+//    public func minium() -> BST {
+//        var node = self
+//        while let next = node.left {
+//            node = next
+//        }
+//        return node
+//    }
+//
+//    public func maximum() -> BST {
+//        var node = self
+//        while let next = node.right {
+//            node = next
+//        }
+//
+//        return node
+//    }
+//
+//
+//    //@discardableResult
+//    public func remove() -> BST? {
+//        let replacement : BST?
+//        if let right = right {
+//            replacement = right.minium()
+//        } else if let left = left{
+//            replacement = left.maximum()
+//        } else {
+//            replacement = nil
+//        }
+//
+//        replacement?.remove()
+//
+//        replacement?.right = right
+//        replacement?.left = left
+//        right?.parent = replacement
+//        left?.parent = replacement
+//        reconnectParentTo(node: replacement)
+//
+//        parent = nil
+//        left = nil
+//        right = nil
+//
+//        return replacement
+//    }
+//
+//    public func map(formula: (T) -> T) -> [T] {
+//        var a = [T]()
+//        if let left = left { a += left.map(formula: formula) }
+//        a.append(formula(value))
+//        if let right = right { a += right.map(formula: formula) }
+//        return a
+//    }
+//
+//    public func toArray() -> [T] {
+//        return map { $0 }
+//    }
+//
+//}
+//
+//
+//extension BST: CustomStringConvertible {
+//    public var description: String {
+//        var s = ""
+//        if let left = left {
+//            s += "(\(left.description)) <- "
+//        }
+//        s += "\(value)"
+//        if let right = right {
+//            s += " -> (\(right.description))"
+//        }
+//        return s
+//    }
+//}
+//
+//let tree = BST<Int>(value: 7)
+//
+//tree.insert(value: 2)
+//tree.insert(value: 5)
+//tree.insert(value: 10)
+//tree.insert(value: 9)
+//tree.insert(value: 1)
+//
+//print(tree.description)
+//
+//tree.search(value: 9)
+//
+//
+//
+//tree.traverseInOrder { (value) in
+//    print(value)
+//}
+//
+//print("\n")
+//
+//tree.traversePostOrder { (value) in
+//    print(value)
+//}
+//
+//print("\n")
+//
+//tree.traversePreOrder { (value) in
+//    print(value)
+//}
+//
+//
+////tree.description
+//
+//
+//tree.toArray()
+//
+//tree.remove()
+//tree.toArray()
 //tree.description
 
-
-tree.toArray()
-
-tree.remove()
-tree.toArray()
-//tree.description
 
 
 // Matrix
@@ -299,40 +300,105 @@ tree.toArray()
  *      13 14 15 16
  */
 
-func printMatrixSpirally(arr:[[Int]], m:Int, n:Int) {
+//func printMatrixSpirally(arr:[[Int]], m:Int, n:Int) {
+//    var k = 0, l = 0
+//    var last_row = m - 1, last_col = n - 1
+//
+//    while k <= last_row  && l <= last_col{
+//        for i in l...last_col{
+//            print(arr[k][i])
+//        }
+//        k+=1
+//        for i in k...last_row {
+//            print(arr[i][last_col])
+//        }
+//        last_col-=1
+//
+//        if k <= last_row {
+//            for i in (l...last_col).reversed(){
+//
+//                 print(arr[last_row][i])
+//            }
+//            last_row-=1
+//        }
+//        if l <= last_col{
+//            for i in (k...last_row).reversed(){
+//                print(arr[i][l])
+//            }
+//            l+=1
+//        }
+//    }
+//}
+
+
+
+//printMatrixSpirally(arr: [[1,2,3,4,5],[6,7,8,9,10],[11,12,13,14, 15],[16,17,18,19, 20]], m: 4, n: 5)
+
+
+// Rotate matrix clockwise
+//
+
+func rotateMatrixCW(array:[[Int]], m:Int, n:Int) {
     var k = 0, l = 0
-    var last_row = m - 1, last_col = n - 1
-
-    while k <= last_row  && l <= last_col{
-        for i in l...last_col{
-            print(arr[k][i])
+    var prev, curr:Int
+    var arr = array
+    
+    var noRow = m, noCol = n
+    
+    while k <  noRow && l < noCol {
+        
+        
+        if k+1 == noRow || l+1 == noCol {
+            break
         }
+        
+        
+        prev = arr[k+1][l]
+        
+        for i in l..<noCol{
+            curr = arr[k][i]
+            arr[k][i] = prev
+            prev = curr
+        }
+        
         k+=1
-        for i in k...last_row {
-            print(arr[i][last_col])
+        
+        for i in k..<m{
+            curr = arr[i][noCol-1]
+            arr[i][noCol-1] = prev
+            prev = curr
         }
-        last_col-=1
-
-        if k <= last_row {
-            for i in (l...last_col).reversed(){
-
-                 print(arr[last_row][i])
+        noCol-=1
+        
+        if (k<noRow) {
+            for i in (l..<noCol).reversed() {
+                curr = arr[noRow-1][i]
+                arr[noRow-1][i] = prev
+                prev = curr
             }
-            last_row-=1
+            noRow-=1
         }
-        if l <= last_col{
-            for i in (k...last_row).reversed(){
-                print(arr[i][l])
+        
+        
+        if (l<noCol){
+            for i in (k..<noRow).reversed() {
+                curr = arr[i][l]
+                arr[i][l] = prev
+                prev = curr
             }
             l+=1
         }
+        
+        
+        for i in 0...m-1
+        {
+            for j in 0...n-1 {
+            print("\(arr[i][j]) ")
+        }
+        
     }
 }
-
-
-
-printMatrixSpirally(arr: [[1,2,3,4,5],[6,7,8,9,10],[11,12,13,14, 15],[16,17,18,19, 20],[21,22,23,24,25]], m: 5, n: 5)
-
-
+}
+rotateMatrixCW(array: [[1,2,3],[4,5,6], [7,8,9]], m: 3, n: 3)
 
 
