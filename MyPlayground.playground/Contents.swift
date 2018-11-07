@@ -288,6 +288,51 @@ tree.toArray()
 //tree.description
 
 
+// Matrix
+
+// Print Matrix in spiral format
+
+/**
+ *      1  2  3  4
+ *      5  6  7  8
+ *      9  10 11 12
+ *      13 14 15 16
+ */
+
+func printMatrixSpirally(arr:[[Int]], m:Int, n:Int) {
+    var k = 0, l = 0
+    var last_row = m - 1, last_col = n - 1
+
+    while k <= last_row  && l <= last_col{
+        for i in l...last_col{
+            print(arr[k][i])
+        }
+        k+=1
+        for i in k...last_row {
+            print(arr[i][last_col])
+        }
+        last_col-=1
+
+        if k <= last_row {
+            for i in (l...last_col).reversed(){
+
+                 print(arr[last_row][i])
+            }
+            last_row-=1
+        }
+        if l <= last_col{
+            for i in (k...last_row).reversed(){
+                print(arr[i][l])
+            }
+            l+=1
+        }
+    }
+}
+
+
+
+printMatrixSpirally(arr: [[1,2,3,4,5],[6,7,8,9,10],[11,12,13,14, 15],[16,17,18,19, 20],[21,22,23,24,25]], m: 5, n: 5)
+
 
 
 
