@@ -293,29 +293,56 @@ class LinkedList {
         //duplicate elements next by next
         //Method 3: Use hashing: store the visited node if it does not contain
         // in the hash map, if it exists delete the node
-        let n = head
-        var next_next, curr:LinkedNode!
-        var map = [LinkedNode]()
-        while n != nil {
-            if !map.contains(n!){
-                map.append(n!)
-                curr = n
-                next_next = n?.next
-                
+        var prev, curr:LinkedNode!
+        curr = head
+        prev = nil
+        var map = [Int]()
+        while curr != nil {
+            var curVal = (curr.data)!
+            if map.contains(curVal){
+               prev.next = curr.next
+            } else {
+                map.append(curVal)
+                prev = curr
             }
+            curr = curr.next
         }
     }
     
+    func swapTwoNodesNotData(x:Int, y:Int)  {
+        var n = head
+        var prevX, currX, prevY, currY:LinkedNode!
+        
+        if x==y {
+            return
+        }
+        prevX = nil
+        currX = head
+        while currX != nil && currX.data != x {
+            prevX = currX
+            currX = currX.next
+        }
+        
+        prevY = nil
+        currY = head
+        while currY != nil && currY.data != y {
+            prevY = currY
+            currY = currY.next
+        }
+        
+        if 
+        
+    }
         
     }
 
 
 
 var linkedList = LinkedList()
-linkedList.head = LinkedNode(value: 3)
+linkedList.head = LinkedNode(value: 5)
 var one  = LinkedNode(value: 3)
 var two  = LinkedNode(value: 4)
-var three  = LinkedNode(value: 5)
+var three  = LinkedNode(value: 3)
 var four  = LinkedNode(value: 8)
 
 
@@ -399,3 +426,9 @@ exampleOf(description: "Delete duplicate occurence in sorted linked list") {
     linkedList.printTraversal()
 }
 
+exampleOf(description: "Delete duplicate occurence in unsorted list") {
+    linkedList.push(node: LinkedNode(value: 3))
+    linkedList.printTraversal()
+    linkedList.removeDuplicatedUnsorted()
+    linkedList.printTraversal()
+}
